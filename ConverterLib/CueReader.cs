@@ -36,7 +36,7 @@ namespace ConverterLib
                 switch (cmd)
                 {
                     case "TRACK": 
-                        int t ;
+                        int t = 0;
                         if (int.TryParse(value.Substring(0, 2),out t))
                             model.Track = t;
                         CueSongInfo song=ReadTrackInfo(reader,model);
@@ -66,6 +66,7 @@ namespace ConverterLib
                         
                 }
             }
+           
             (songs as List<CueSongInfo>).Sort();
             AdjustTime();
 
@@ -73,23 +74,32 @@ namespace ConverterLib
         }
         private void AdjustTime()
         {
-            CueTime t ;
-            for (int i = 0; i < songs.Count; i++)
+            CueTime t =new CueTime(0,0,0);
+            for (int i = 0; i < songs.Count-1; i++)
             {
-                t = songs[i].StartTime+new CueTime(0,0,2);
-                songs[i].StartTime = songs[i].EndTime;
-                if (i > 0)
+                if (songs[i + 1].EndTime.Equals(t))
                 {
-                    if (t.ToMiliSeconds() != 0)
-                    {
-                        songs[i - 1].EndTime = t;
-                    }
-                    else
-                    {
-                        songs[i - 1].EndTime = songs[i].StartTime;
-                    }
+                    songs[i].EndTime = songs[i + 1].StartTime;
                 }
+                else
+                {
+                    songs[i].EndTime = songs[i + 1].EndTime;
+                }
+                //t = songs[i].StartTime+new CueTime(0,0,2);
+                //songs[i].StartTime = songs[i].EndTime;
+                //if (i > 0)
+                //{
+                //    if (t.ToMiliSeconds() != 0)
+                //    {
+                //        songs[i - 1].EndTime = t;
+                //    }
+                //    else
+                //    {
+                //        songs[i - 1].EndTime = songs[i].StartTime;
+                //    }
+                //}
             }
+            songs[songs.Count - 1].EndTime = t;
             
         }
         private CueSongInfo ReadTrackInfo(StreamReader reader, CueSongInfo model)
@@ -98,6 +108,10 @@ namespace ConverterLib
             while (!reader.EndOfStream)
             {
                 string str = reader.ReadLine().Trim();
+                if (string.IsNullOrEmpty(str))
+                {
+                    continue;
+                }
                 int splitpos = str.IndexOf(' ');
                 string cmd = str.Substring(0, splitpos).ToUpper();
                 string value = str.Substring(splitpos).Replace('\"', ' ').Trim();
@@ -116,6 +130,9 @@ namespace ConverterLib
                     case "YEAR":
                         info.Year = value.Trim();
                         break;
+                    case "ISRC":
+                        info.Isrc = value.Trim();
+                        break;
                     case "INDEX":
                         int timesplit = value.IndexOf(' ');
                         string type = value.Substring(0, timesplit);
@@ -123,7 +140,7 @@ namespace ConverterLib
                         CueTime time = new CueTime(0,0,0);
                         if (CueTime.TryParse(tstr, out time))
                         {
-                            if (type == "00")
+                            if (type == "01")
                             {
 
                                 info.StartTime = time;

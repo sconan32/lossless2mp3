@@ -25,7 +25,7 @@ namespace Converter
             InitializeComponent();
             this.btnStart.IsEnabled = false;
         }
-        string[] supportType = { "APE", "FLAC", "TTA", "WAV" };
+        string[] supportType = { "WAV","APE", "FLAC", "TTA" };
         string cueFile;
         string audioFile;
         IList<ConverterLib.CueSongInfo> songs;

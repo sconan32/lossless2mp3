@@ -42,14 +42,14 @@ namespace ConverterLib
             get { return genre; }
             set { genre = value; }
         }
-        CueTime startTime;
+        CueTime startTime=new CueTime(0);
 
         public CueTime StartTime
         {
             get { return startTime; }
             set { startTime = value; }
         }
-        CueTime endTime;
+        CueTime endTime=new CueTime(0);
 
         public CueTime EndTime
         {
@@ -65,6 +65,9 @@ namespace ConverterLib
             set { year = value; }
         }
 
+        string isrc;
+        public string Isrc { get; set; }
+
         public object Clone()
         {
             return base.MemberwiseClone();
@@ -76,6 +79,7 @@ namespace ConverterLib
             else if (track > other.track) return 1;
             else return 0;
         }
+      
         public string FileName
         {
             get {

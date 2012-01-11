@@ -110,6 +110,14 @@ namespace ConverterLib
             a += Minute * 60 * 1000;
             return a;
         }
+        public override bool Equals(object obj)
+        {
+            return (obj is CueTime)?((CueTime)obj).GetHashCode()==this.GetHashCode():false;
+        }
+        public override int GetHashCode()
+        {
+            return this.Minute.GetHashCode() + this.Second.GetHashCode() + this.Frames.GetHashCode();
+        }
         public override string ToString()
         {
             return Minute.ToString() + ":" + Second.ToString() + ":" + Frames.ToString() ;
