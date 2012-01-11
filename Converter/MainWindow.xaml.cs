@@ -74,7 +74,7 @@ namespace Converter
                     split.BeginSplit(info);
                     split.EndSplit(false);
                     ConverterLib.Mp3Converter con = new ConverterLib.Mp3Converter(split.NewFileName,info);
-                   // con.OutputUpdated+=new System.Diagnostics.DataReceivedEventHandler(converter_OutputUpdated);
+                    con.ProgressChanged += new ConverterLib.ProgressChangedEventHandler(con_ProgressChanged);
                     txtOutput.Dispatcher.Invoke(new Action(() => { txtOutput.Text = "[√]正在转换...[" + info.Title + "]"; }));
                     con.BeginConvert(new ConverterLib.Mp3Config());
                     con.EndConvert(false);
@@ -93,6 +93,14 @@ namespace Converter
             this.btnOpen.IsEnabled = false;
             this.btnStart.IsEnabled = false;
             th.Start();
+        }
+
+        void con_ProgressChanged(object sender, ConverterLib.ProgressChangedEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                SubProgressBar.Value = e.Progress;
+            }));
         }
      
         void converter_OutputUpdated(object sender, System.Diagnostics.DataReceivedEventArgs e)

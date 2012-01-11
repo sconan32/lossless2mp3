@@ -51,6 +51,7 @@
     <Compile Include="IWavConverter.cs" />
     <Compile Include="Mp3Config.cs" />
     <Compile Include="Mp3Converter.cs" />
+    <Compile Include="ProgressChangedEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FlacWavConverter.cs" />
     <Compile Include="TtaWavConverter.cs" />
@@ -60,12 +61,6 @@
     <Compile Include="WavWavConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="tools\auCDtect.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="tools\Cutter.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="tools\flac.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

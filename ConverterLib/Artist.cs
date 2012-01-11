@@ -31,6 +31,10 @@ namespace Mp3Classify
         {
             return (this.name == ((Artist)obj).name);
         }
+        public override int GetHashCode()
+        {
+            return this.name.GetHashCode();
+        }
         public override string ToString()
         {
             return this.name ;
